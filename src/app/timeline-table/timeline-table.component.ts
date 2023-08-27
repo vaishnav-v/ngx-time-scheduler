@@ -6,7 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from "@angular/core";
-import { HeaderDate, HeaderMonth, ISSUE_LIST, issue } from "./timeline-model";
+import { HeaderDate, HeaderMonth, ISSUE_LIST, IssueGroupList, issue } from "./timeline-model";
 import * as moment from "moment";
 import { throttle } from 'lodash';
 
@@ -36,7 +36,12 @@ export class TimelineTableComponent implements OnInit, AfterViewInit {
   timelineBody: ElementRef;
 
   headerList: HeaderMonth[] = [];
-  ISSUELIST = ISSUE_LIST;
+  ISSUELIST: issue[] = ISSUE_LIST;
+
+  FORMATTED_ISSUES = null
+
+
+  LEFTSIDE_WIDTH = 100
 
   globalStyle: HTMLStyleElement = null
   constructor() { }
@@ -46,11 +51,13 @@ export class TimelineTableComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.createLine(moment("03/01/2023", "DD/MM/YYYY"));
     this.highlightDateOnMove()
+
   }
 
 
   ngOnInit(): void {
     this.createHeaders();
+    this.groupIssues('issueType')
   }
 
   getMinutesBtwDays(start: moment.Moment, end: moment.Moment) {
@@ -108,7 +115,7 @@ export class TimelineTableComponent implements OnInit, AfterViewInit {
     const table: HTMLElement = this.timelineTable.nativeElement;
     const line: HTMLDivElement = document.createElement("div");
     const leftTds = this.getNumberOfTds(date);
-    const leftPixels: string = (leftTds * 50) + 100 + (50 / 2) + "px";
+    const leftPixels: string = (leftTds * 50) + this.LEFTSIDE_WIDTH + (50 / 2) + "px";
     line.classList.add("line");
     line.style.left = leftPixels;
     table.prepend(line);
@@ -124,22 +131,23 @@ export class TimelineTableComponent implements OnInit, AfterViewInit {
     const TABLE_BODY = this.timelineBody.nativeElement
     const BODY = document.body
     const HEADERS = document.querySelectorAll('.tl-date-th')
-    const TABLE_RECT = TABLE_BODY.getBoundingClientRect()
-    const DELAY = 100
-    const DISTANCE_X_TO_REMOVE = 100
+    const DELAY = 200
 
     const MOUSE_MOVE_HANDLE_FUNCTION = throttle((event) => {
+      const DISTANCE_X_TO_REMOVE = this.LEFTSIDE_WIDTH
+      const TABLE_RECT = TABLE_BODY.getBoundingClientRect()
       const mouseXCord = event.clientX - TABLE_RECT.left;
-      const mouseYCord = event.clientY - TABLE_RECT.bottom; 
+      const mouseYCord = event.clientY - TABLE_RECT.bottom;
       const pixelsFormLeftOfIssue = mouseXCord - (DISTANCE_X_TO_REMOVE)
 
       const numberOfColumnsLeftOfIssue = Math.floor(pixelsFormLeftOfIssue / 50)
-      const columnsNegativeRemoved = Math.max(numberOfColumnsLeftOfIssue,0) 
+      const columnsNegativeRemoved = Math.max(numberOfColumnsLeftOfIssue, 0)
 
       if (HEADERS && (numberOfColumnsLeftOfIssue < 0 || mouseYCord >= -5)) this.removeHeaders()
-      else if(HEADERS) this.highLightHeader(columnsNegativeRemoved)
+      else if (HEADERS) this.highLightHeader(columnsNegativeRemoved)
 
     }, DELAY);
+
     BODY.addEventListener('mousemove', MOUSE_MOVE_HANDLE_FUNCTION);
   }
 
@@ -168,5 +176,33 @@ export class TimelineTableComponent implements OnInit, AfterViewInit {
     if (this.globalStyle) return
     this.globalStyle = document.createElement('style');
     document.head.appendChild(this.globalStyle);
+  }
+
+
+  groupIssues(key: string): void {
+    let unFormattedIssues = [...this.ISSUELIST]
+    let groupedIssue = new IssueGroupList()
+    unFormattedIssues.forEach((issue: issue) => {
+      groupedIssue.addIssue(issue, key)
+    })
+    console.log(Object.entries(groupedIssue.issuesFormatted));
+    this.FORMATTED_ISSUES = Object.entries(groupedIssue.issuesFormatted)
+
+  }
+
+
+
+  columnWidthChange(width) {
+    console.log(width);
+
+    const LINES = document.querySelectorAll('.line')
+    const TABLE = document.querySelector('table')
+    LINES.forEach((line: HTMLElement) => {
+      const currentWidth = line.getBoundingClientRect().left - TABLE.getBoundingClientRect().left
+      const newWidth = currentWidth - this.LEFTSIDE_WIDTH + width
+      line.style.left = newWidth + 'px'
+    })
+    this.LEFTSIDE_WIDTH = width
+
   }
 }

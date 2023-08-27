@@ -1,18 +1,25 @@
 $PROGRESS: "td-progress";
 $QA: "td-qa";
 $STAGING: "td-staging";
-*{
+
+* {
     box-sizing: border-box;
 }
+
 .timeline-table {
     border-collapse: separate;
     border-spacing: 0;
     border: 1px solid red !important;
     position: relative;
+
     td,
     th {
         border: 1px solid red;
 
+    }
+
+    .tl-date-th {
+        transition: all 200ms ease-in;
     }
 
     .tl-data-td {
@@ -31,6 +38,10 @@ $STAGING: "td-staging";
         left: 0;
         z-index: 10;
         background-color: white;
+    }
+
+    .tl-name-th {
+        cursor: col-resize;
     }
 
     td {

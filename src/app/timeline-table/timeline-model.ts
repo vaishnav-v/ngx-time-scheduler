@@ -12,12 +12,19 @@ export interface issue {
   issueType: string;
 }
 
+export interface tableConfig {
+  id: number;
+  label: string;
+
+}
+
+export type issueFormmatted = { key: IssueList } | {}
 
 
 export class HeaderDate {
   public label = "";
   public date: moment.Moment | null = null;
-  constructor(private id: number) {} 
+  constructor(private id: number) { }
 }
 export class HeaderMonth {
   public label = "";
@@ -26,6 +33,25 @@ export class HeaderMonth {
   public headerDateList: Array<HeaderDate> = [];
   constructor(private monthLabel: string) {
     this.label = monthLabel;
+  }
+}
+
+export class IssueList {
+  public issueList: issue[] = []
+  public addIssue(issueToAdd: issue) {
+    this.issueList.push(issueToAdd)
+  }
+}
+
+export class IssueGroupList {
+  public issuesFormatted: issueFormmatted = {}
+  public addIssue(issueToAdd: issue, key: string): issueFormmatted {
+    const groupingKey = issueToAdd[key]
+    if (!this.issuesFormatted[groupingKey]) {
+      this.issuesFormatted[groupingKey] = new IssueList();
+    }
+    this.issuesFormatted[groupingKey].addIssue(issueToAdd);
+    return this.issuesFormatted;
   }
 }
 
@@ -43,13 +69,13 @@ export class HeaderMonth {
 
 
 
-export const ISSUE_LIST:issue[] =  [
+export const ISSUE_LIST: issue[] = [
   {
     id: 1,
     name: 'Issue 1',
     key: 'ISSUE-1',
     startDate: moment("03/01/2023", "DD/MM/YYYY"),
-    qaDate:moment("06/01/2023", "DD/MM/YYYY"),
+    qaDate: moment("06/01/2023", "DD/MM/YYYY"),
     stagingDate: moment("16/01/2023", "DD/MM/YYYY"),
     assignee: 'John Doe',
     priority: 'High',
@@ -60,7 +86,7 @@ export const ISSUE_LIST:issue[] =  [
     name: 'Issue 2',
     key: 'ISSUE-2',
     startDate: moment("03/01/2023", "DD/MM/YYYY"),
-    qaDate:moment("06/01/2023", "DD/MM/YYYY"),
+    qaDate: moment("06/01/2023", "DD/MM/YYYY"),
     stagingDate: moment("16/01/2023", "DD/MM/YYYY"),
     assignee: 'Jane Smith',
     priority: 'Medium',
@@ -71,7 +97,7 @@ export const ISSUE_LIST:issue[] =  [
     name: 'Issue 3',
     key: 'ISSUE-3',
     startDate: moment("03/01/2023", "DD/MM/YYYY"),
-    qaDate:moment("06/01/2023", "DD/MM/YYYY"),
+    qaDate: moment("06/01/2023", "DD/MM/YYYY"),
     stagingDate: moment("16/01/2023", "DD/MM/YYYY"),
     assignee: 'Robert Johnson',
     priority: 'Low',
@@ -82,7 +108,7 @@ export const ISSUE_LIST:issue[] =  [
     name: 'Issue 4',
     key: 'ISSUE-4',
     startDate: moment("03/01/2023", "DD/MM/YYYY"),
-    qaDate:moment("06/01/2023", "DD/MM/YYYY"),
+    qaDate: moment("06/01/2023", "DD/MM/YYYY"),
     stagingDate: moment("16/01/2023", "DD/MM/YYYY"),
     assignee: 'Alice Williams',
     priority: 'High',
@@ -93,7 +119,7 @@ export const ISSUE_LIST:issue[] =  [
     name: 'Issue 5',
     key: 'ISSUE-5',
     startDate: moment("03/01/2023", "DD/MM/YYYY"),
-    qaDate:moment("01/01/2023", "DD/MM/YYYY"),
+    qaDate: moment("01/01/2023", "DD/MM/YYYY"),
     stagingDate: moment("26/01/2023", "DD/MM/YYYY"),
     assignee: 'Michael Brown',
     priority: 'Medium',
@@ -104,7 +130,7 @@ export const ISSUE_LIST:issue[] =  [
     name: 'Issue 6',
     key: 'ISSUE-6',
     startDate: moment("05/01/2023", "DD/MM/YYYY"),
-    qaDate:moment("06/01/2023", "DD/MM/YYYY"),
+    qaDate: moment("06/01/2023", "DD/MM/YYYY"),
     stagingDate: moment("11/01/2023", "DD/MM/YYYY"),
     assignee: 'Emily Davis',
     priority: 'Low',
@@ -115,7 +141,7 @@ export const ISSUE_LIST:issue[] =  [
     name: 'Issue 7',
     key: 'ISSUE-7',
     startDate: moment("03/01/2023", "DD/MM/YYYY"),
-    qaDate:moment("06/01/2023", "DD/MM/YYYY"),
+    qaDate: moment("06/01/2023", "DD/MM/YYYY"),
     stagingDate: moment("16/01/2023", "DD/MM/YYYY"),
     assignee: 'William Wilson',
     priority: 'High',
@@ -126,7 +152,7 @@ export const ISSUE_LIST:issue[] =  [
     name: 'Issue 8',
     key: 'ISSUE-8',
     startDate: moment("03/01/2023", "DD/MM/YYYY"),
-    qaDate:moment("06/01/2023", "DD/MM/YYYY"),
+    qaDate: moment("06/01/2023", "DD/MM/YYYY"),
     stagingDate: moment("16/01/2023", "DD/MM/YYYY"),
     assignee: 'Olivia Martinez',
     priority: 'Medium',

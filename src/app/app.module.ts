@@ -10,13 +10,17 @@ import {MatTableModule} from '@angular/material/table';
 import { TimelineTdColorDirective } from './timeline-td-color.directive';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CanvasTableComponent } from './canvas/canvas.component';
+import { ResizableDraggableDirective } from './resizable-draggable.directive';
+import { ColumnResizableDirective } from './column-resizable.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     TimelineTableComponent,
     TimelineTdColorDirective,
-    CanvasTableComponent
+    CanvasTableComponent,
+    ResizableDraggableDirective,
+    ColumnResizableDirective
   ],
   imports: [
     BrowserModule,

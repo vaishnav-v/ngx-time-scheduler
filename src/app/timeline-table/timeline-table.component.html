@@ -2,9 +2,9 @@
   <table class="timeline-table" id="timeline-table" #timelineTable>
     <thead>
       <tr class="tl-month-tr tl-header">
-        <th colspan="3" rowspan="2" class="tl-name-th">NAME</th>
+        <th colspan="3" rowspan="2" appColumnResizable (columnWidthChange)="columnWidthChange($event)" class="tl-name-th">NAME</th>
         <ng-container *ngFor="let headerMonth of headerList;">
-          <th
+          <th 
             [attr.class]="'tl-month-th tl-header'"
             [attr.colspan]="headerMonth.headerDateList.length"
           >
@@ -22,7 +22,7 @@
       </tr>
     </thead>
     <tbody #timelineBody>
-      <ng-container
+      <!-- <ng-container 
         *cdkVirtualFor="let issue of ISSUELIST; let i = index"
         class="example-item"
       >
@@ -41,6 +41,30 @@
             </ng-container>
           </ng-container>
         </tr>
+      </ng-container> -->
+      <ng-container>
+        <ng-container *ngFor="let issueGroups of FORMATTED_ISSUES">
+          <tr class="tl-date-tr">
+            <td colspan="3" class="tl-group-name-td">{{ issueGroups[0] }}</td>
+          </tr>
+          <ng-container  *ngFor="let issue of issueGroups[1].issueList">
+            <tr class="tl-date-tr">
+              <td colspan="3" class="tl-name-td">{{ issue.name }}</td>
+              <ng-container *ngFor="let headerMonth of headerList">
+                <ng-container *ngFor="let headerDate of headerMonth.headerDateList">
+                  <td
+                    class="tl-data-td"
+                    timeLineTd
+                    [issue]="issue"
+                    [columnDate]="headerDate.date"
+                  >
+                    <div></div>
+                  </td>
+                </ng-container>
+              </ng-container>
+            </tr>
+          </ng-container>
+        </ng-container>
       </ng-container>
     </tbody>
   </table>
