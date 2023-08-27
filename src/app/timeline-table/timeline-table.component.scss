@@ -1,0 +1,80 @@
+$PROGRESS: "td-progress";
+$QA: "td-qa";
+$STAGING: "td-staging";
+*{
+    box-sizing: border-box;
+}
+.timeline-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid red !important;
+    position: relative;
+    td,
+    th {
+        border: 1px solid red;
+
+    }
+
+    .tl-data-td {
+        height: 1em;
+        min-width: 50px;
+        border: 0;
+    }
+
+    .tl-name-th,
+    .tl-name-td {
+        min-width: 100px;
+        max-width: 100px;
+        height: 1.5em;
+        text-align: center;
+        position: sticky;
+        left: 0;
+        z-index: 10;
+        background-color: white;
+    }
+
+    td {
+        &.td-progress {
+            padding: 1px;
+            border: none;
+
+            div {
+                background-color: green;
+                height: 100%;
+            }
+        }
+
+        &.td-qa {
+            padding: 1px;
+            border: none;
+
+            div {
+                background-color: blue;
+                height: 100%;
+            }
+        }
+
+        &.td-staging {
+            padding: 1px;
+            border: none;
+
+            div {
+                background-color: cyan;
+                height: 100%;
+            }
+        }
+    }
+}
+
+:host ::ng-deep .line {
+    position: absolute;
+    height: 100%;
+    border-right: 1px solid blue;
+    top: initial;
+}
+
+.example-viewport {
+    height: calc(100vh - 40px);
+    width: 100%;
+    border: 1px solid black;
+}

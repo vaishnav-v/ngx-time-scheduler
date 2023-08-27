@@ -1,0 +1,47 @@
+<cdk-virtual-scroll-viewport itemSize="10" class="example-viewport">
+  <table class="timeline-table" id="timeline-table" #timelineTable>
+    <thead>
+      <tr class="tl-month-tr tl-header">
+        <th colspan="3" rowspan="2" class="tl-name-th">NAME</th>
+        <ng-container *ngFor="let headerMonth of headerList;">
+          <th
+            [attr.class]="'tl-month-th tl-header'"
+            [attr.colspan]="headerMonth.headerDateList.length"
+          >
+            {{ headerMonth.label }}
+          </th>
+        </ng-container>
+      </tr>
+      <tr class="tl-date-tr">
+        <!-- <th colspan="3"  class="tl-name-th"></th> -->
+        <ng-container *ngFor="let headerMonth of headerList">
+          <ng-container *ngFor="let headerDate of headerMonth.headerDateList">
+            <th [attr.class]="'tl-date-th tl-date-th-'+headerDate.id">{{ headerDate.label }}</th>
+          </ng-container>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody #timelineBody>
+      <ng-container
+        *cdkVirtualFor="let issue of ISSUELIST; let i = index"
+        class="example-item"
+      >
+        <tr class="tl-date-tr">
+          <td colspan="3" class="tl-name-td">{{ issue.name }}</td>
+          <ng-container *ngFor="let headerMonth of headerList">
+            <ng-container *ngFor="let headerDate of headerMonth.headerDateList">
+              <td
+                class="tl-data-td"
+                timeLineTd
+                [issue]="issue"
+                [columnDate]="headerDate.date"
+              >
+                <div></div>
+              </td>
+            </ng-container>
+          </ng-container>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</cdk-virtual-scroll-viewport>

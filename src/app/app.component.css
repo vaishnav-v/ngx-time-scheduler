@@ -1,0 +1,5 @@
+.container{
+    width:calc(100vw - 40px);
+    padding:1rem;
+    overflow: auto;
+}

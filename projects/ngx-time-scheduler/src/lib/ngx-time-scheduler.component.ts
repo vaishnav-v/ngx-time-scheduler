@@ -20,7 +20,7 @@ const moment = moment_;
 @Component({
   selector: 'ngx-ts[items][periods][sections]',
   templateUrl: './ngx-time-scheduler.component.html',
-  styleUrls: ['./ngx-time-scheduler.component.css']
+  styleUrls: ['./ngx-time-scheduler.component.scss']
 })
 export class NgxTimeSchedulerComponent implements OnInit, OnDestroy {
   @ViewChild('sectionTd') set SectionTd(elementRef: ElementRef) {
@@ -68,7 +68,7 @@ export class NgxTimeSchedulerComponent implements OnInit, OnDestroy {
     moment.locale(this.locale);
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {debugger
     this.setSectionsInSectionItems();
     this.changePeriod(this.periods[0], false);
     this.itemPush();
