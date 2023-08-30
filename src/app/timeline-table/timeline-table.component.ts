@@ -40,6 +40,7 @@ export class TimelineTableComponent implements OnInit, AfterViewInit {
 
   FORMATTED_ISSUES = null
 
+  HEADER_FRAME_MIN = 60 * 24 * 2
 
   LEFTSIDE_WIDTH = 100
 
@@ -49,7 +50,7 @@ export class TimelineTableComponent implements OnInit, AfterViewInit {
 
 
   ngAfterViewInit(): void {
-    this.createLine(moment("03/01/2023", "DD/MM/YYYY"));
+    this.createLine(moment("02/01/2023", "DD/MM/YYYY"));
     this.highlightDateOnMove()
 
   }
@@ -104,7 +105,7 @@ export class TimelineTableComponent implements OnInit, AfterViewInit {
       headerDate.label = tempDate.format(headerFormat);
       currentMonth?.headerDateList.push(headerDate);
 
-      tempDate.add(1, "day");
+      tempDate.add(this.HEADER_FRAME_MIN, "minutes");
       index++
     }
 
@@ -115,7 +116,9 @@ export class TimelineTableComponent implements OnInit, AfterViewInit {
     const table: HTMLElement = this.timelineTable.nativeElement;
     const line: HTMLDivElement = document.createElement("div");
     const leftTds = this.getNumberOfTds(date);
-    const leftPixels: string = (leftTds * 50) + this.LEFTSIDE_WIDTH + (50 / 2) + "px";
+    const leftPixels: string = (leftTds * 50) + this.LEFTSIDE_WIDTH + ((((60 * 24) / this.HEADER_FRAME_MIN) * 50)/ 2)  + "px";
+    console.log((((60 * 24) / this.HEADER_FRAME_MIN) * 50),leftTds );
+    
     line.classList.add("line");
     line.style.left = leftPixels;
     table.prepend(line);
@@ -123,7 +126,7 @@ export class TimelineTableComponent implements OnInit, AfterViewInit {
   getNumberOfTds(dateToAttach: moment.Moment) {
     const startDate = timelineStart.clone();
     const minuteDiff = Math.abs(startDate.diff(dateToAttach, "minutes"));
-    const dayDiff = minuteDiff / (24 * 60);
+    const dayDiff = minuteDiff / (this.HEADER_FRAME_MIN);
     return dayDiff;
   }
 
@@ -183,7 +186,7 @@ export class TimelineTableComponent implements OnInit, AfterViewInit {
     let unFormattedIssues = [...this.ISSUELIST]
     let groupedIssue = new IssueGroupList()
     unFormattedIssues.forEach((issue: issue) => {
-      groupedIssue.addIssue(issue, key)
+      groupedIssue.addIssue(issue, ['issueType','priority'])
     })
     console.log(Object.entries(groupedIssue.issuesFormatted));
     this.FORMATTED_ISSUES = Object.entries(groupedIssue.issuesFormatted)

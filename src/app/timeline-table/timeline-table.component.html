@@ -45,7 +45,7 @@
       <ng-container>
         <ng-container *ngFor="let issueGroups of FORMATTED_ISSUES">
           <tr class="tl-date-tr">
-            <td colspan="3" class="tl-group-name-td">{{ issueGroups[0] }}</td>
+            <td colspan="3" class="tl-group-name-td tl-name-td">{{ issueGroups[0] }}</td>
           </tr>
           <ng-container  *ngFor="let issue of issueGroups[1].issueList">
             <tr class="tl-date-tr">

@@ -39,6 +39,11 @@ $STAGING: "td-staging";
         z-index: 10;
         background-color: white;
     }
+    .tl-group-name-td{
+        text-align: left;
+        font-style: italic;
+        padding-left: 4px;
+    }
 
     .tl-name-th {
         cursor: col-resize;
